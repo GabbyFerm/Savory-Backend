@@ -67,7 +67,7 @@ This project follows **Clean Architecture** principles with clear separation of 
 - ✅ User registration and authentication with Identity
 - ✅ User profile management (username, email, password)
 - ✅ Personalized user avatars with initials
-- ✅ Create, read, update, delete recipes
+- ✅ Customizable avatar colors (preset palette)
 - ✅ Create, read, update, delete recipes
 - ✅ Add ingredients to recipes with quantities
 - ✅ Organize recipes by categories
