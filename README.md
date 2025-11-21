@@ -3,16 +3,16 @@
 A fullstack recipe management application where users can store, organize, and manage their personal recipes with ease.
 
 ## 📋 Table of Contents
-- [Overview](#overview)
-- [Tech Stack](#tech-stack)
-- [Architecture](#architecture)
-- [Features](#features)
-- [Database Schema](#database-schema)
-- [API Endpoints](#api-endpoints)
-- [Getting Started](#getting-started)
-- [Testing](#testing)
-- [Known Issues](#known-issues)
-- [Future Improvements](#future-improvements)
+- [Overview](#-overview)
+- [Tech Stack](#-tech-stack)
+- [Architecture](#-architecture)
+- [Features](#-features)
+- [Database Schema](#-database-schema)
+- [API Endpoints](#-api-endpoints)
+- [Getting Started](#-getting-started)
+- [Testing](#-testing)
+- [Known Issues](#-known-issues)
+- [Future Improvements](#-future-improvements)
 
 ## 🎯 Overview
 
