@@ -45,7 +45,7 @@ Savory is a personal recipe manager built with .NET and React. Users can create 
 This project follows **Clean Architecture** principles with clear separation of concerns:
 ```
 ┌─────────────────────────────────────────┐
-│          Savory.Api (Controllers)        │
+│          Savory.Api (Controllers)       │
 ├─────────────────────────────────────────┤
 │   Savory.Application (Services, DTOs)   │
 ├─────────────────────────────────────────┤
@@ -317,7 +317,7 @@ I chose Clean Architecture because it provides clear separation between business
 
 ## 👤 Author
 
-**Your Name**
+**Gabby Ferm**
 - GitHub: [@GabbyFerm](https://github.com/GabbyFerm)
 - Email: gabbzf@gmail.com
 
