@@ -84,7 +84,7 @@ namespace Api
             app.UseCors(corsPolicy);
 
             // Authentication & Authorization 
-            app.UseAuthentication();  
+            app.UseAuthentication();
             app.UseAuthorization();
 
             // Map controllers
@@ -92,11 +92,11 @@ namespace Api
 
             // Health check endpoint
             app.MapGet("/health", () => Results.Ok(new
-                {
-                    status = "healthy",
-                    timestamp = DateTime.UtcNow,
-                    environment = app.Environment.EnvironmentName
-                }))
+            {
+                status = "healthy",
+                timestamp = DateTime.UtcNow,
+                environment = app.Environment.EnvironmentName
+            }))
                 .ExcludeFromDescription();
         }
     }
