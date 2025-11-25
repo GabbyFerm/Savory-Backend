@@ -65,7 +65,7 @@ public class RecipeRepository : GenericRepository<Recipe>, IRecipeRepository
             case "cooktime":
                 query = isDescending ? query.OrderByDescending(r => r.CookTime) : query.OrderBy(r => r.CookTime);
                 break;
-            case "createddate": 
+            case "createddate":
                 query = isDescending ? query.OrderByDescending(r => r.CreatedAt) : query.OrderBy(r => r.CreatedAt);
                 break;
 
