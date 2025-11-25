@@ -416,3 +416,43 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# ============================================
+# Savory API Specific
+# ============================================
+
+# Serilog logs
+logs/
+*.log
+
+# Uploaded files (recipe images, etc.)
+wwwroot/images/recipes/
+wwwroot/uploads/
+
+# User secrets and environment-specific settings
+appsettings.Development.json
+appsettings.Production.json
+secrets.json
+
+# Database files (SQLite for testing)
+*.db
+*.db-shm
+*.db-wal
+
+# Test coverage
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*

@@ -3,14 +3,8 @@ using System.Reflection;
 
 namespace Api.Configuration;
 
-/// <summary>
-/// Extension methods for configuring API-specific services
-/// </summary>
 public static class ServiceCollectionExtensions
 {
-    /// <summary>
-    /// Configures Swagger/OpenAPI
-    /// </summary>
     public static IServiceCollection AddSwaggerConfiguration(this IServiceCollection services)
     {
         services.AddSwaggerGen(options =>
@@ -39,9 +33,6 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    /// <summary>
-    /// Configures CORS policies
-    /// </summary>
     public static IServiceCollection AddCorsConfiguration(this IServiceCollection services)
     {
         services.AddCors(options =>
@@ -50,17 +41,17 @@ public static class ServiceCollectionExtensions
             options.AddPolicy("Development", policy =>
             {
                 policy.AllowAnyOrigin()
-                      .AllowAnyMethod()
-                      .AllowAnyHeader();
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
             });
 
             // Production policy - restrictive
             options.AddPolicy("Production", policy =>
             {
                 policy.WithOrigins("https://your-frontend-domain.com")
-                      .AllowAnyMethod()
-                      .AllowAnyHeader()
-                      .AllowCredentials();
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
             });
         });
 

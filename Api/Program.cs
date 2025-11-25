@@ -1,4 +1,4 @@
-using Api.Configuration;
+﻿using Api.Configuration;
 using Api.Middleware;
 using Application;
 using Infrastructure;
@@ -15,7 +15,7 @@ namespace Api
 
             try
             {
-                Log.Information("Starting Clean Architecture Boilerplate API");
+                Log.Information("Starting Savory API");
 
                 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,11 +30,14 @@ namespace Api
                 // Configure the HTTP request pipeline
                 ConfigurePipeline(app);
 
+                Log.Information("Savory API started successfully");
+
                 app.Run();
             }
             catch (Exception ex)
             {
                 Log.Fatal(ex, "Application terminated unexpectedly");
+                throw; // Re-throw to see the actual error
             }
             finally
             {
@@ -80,12 +83,14 @@ namespace Api
             var corsPolicy = app.Environment.IsDevelopment() ? "Development" : "Production";
             app.UseCors(corsPolicy);
 
+            // Authentication & Authorization 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             // Map controllers
             app.MapControllers();
 
-            // Health check endpoint (optional but useful)
+            // Health check endpoint
             app.MapGet("/health", () => Results.Ok(new
             {
                 status = "healthy",
