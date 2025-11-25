@@ -433,6 +433,7 @@ wwwroot/uploads/
 appsettings.Development.json
 appsettings.Production.json
 secrets.json
+*.env
 
 # Database files (SQLite for testing)
 *.db
