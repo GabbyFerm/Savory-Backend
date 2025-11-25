@@ -12,10 +12,10 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     
     - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '8.0.x'
     
@@ -26,8 +26,12 @@ jobs:
       run: dotnet build --no-restore --configuration Release
     
     - name: Run tests
-      run: dotnet test --no-build --verbosity normal --configuration Release
+      run: dotnet test --no-build --verbosity minimal --configuration Release
     
-    - name: Check code formatting
-      run: dotnet format --verify-no-changes --verbosity diagnostic
-      continue-on-error: true  # Don't fail pipeline if formatting issues
+    # Optional: Fail fast if tests fail
+    - name: Upload test results
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: '**/TestResults/**'

@@ -12,32 +12,7 @@ on:
 jobs:
   notify:
     runs-on: ubuntu-latest
-    steps:
-      - name: Notify on push
-        if: github.event_name == 'push'
-        uses: sarisia/actions-status-discord@v1
-        with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          title: "📦 New push to ${{ github.ref_name }}"
-          description: |
-            **Commit:** ${{ github.event.head_commit.message }}
-            **Author:** ${{ github.event.head_commit.author.name }}
-          color: 0x0099ff
-          username: Savory Backend Bot
-      
-      - name: Notify on PR opened
-        if: github.event_name == 'pull_request' && github.event.action == 'opened'
-        uses: sarisia/actions-status-discord@v1
-        with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          title: "🔀 New PR opened"
-          description: |
-            **PR:** ${{ github.event.pull_request.title }}
-            **Author:** ${{ github.event.pull_request.user.login }}
-            **Link:** ${{ github.event.pull_request.html_url }}
-          color: 0xffa500
-          username: Savory Backend Bot
-      
+    steps: 
       - name: Notify on PR merged
         if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
         uses: sarisia/actions-status-discord@v1
