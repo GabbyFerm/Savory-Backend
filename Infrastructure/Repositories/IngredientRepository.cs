@@ -13,7 +13,8 @@ public class IngredientRepository : GenericRepository<Ingredient>, IIngredientRe
 
     public async Task<Ingredient?> GetByNameAsync(string name)
     {
+        var lowerName = name.ToLower();
         return await _dbSet
-            .FirstOrDefaultAsync(i => i.Name.ToLower() == name.ToLower());
+            .FirstOrDefaultAsync(i => i.Name.ToLower() == lowerName);
     }
 }
