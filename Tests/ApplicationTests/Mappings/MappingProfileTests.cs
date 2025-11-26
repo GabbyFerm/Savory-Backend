@@ -23,7 +23,7 @@ public class MappingProfileTests
 
         _mapper = configuration.CreateMapper();
     }
-        
+
     [Fact]
     public void AutoMapper_Configuration_IsValid()
     {
