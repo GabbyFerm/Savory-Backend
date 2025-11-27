@@ -2,11 +2,11 @@
 
 namespace Application.Interfaces;
 
-public interface IRecipeRepository : IGenericRepository<Recipe>
+public interface IRecipeRepository : IGenericRepository<Domain.Entities.Recipe>
 {
-    Task<IEnumerable<Recipe>> GetUserRecipesAsync(Guid userId, string? searchTerm, Guid? categoryId, string? sortBy,
+    Task<IEnumerable<Domain.Entities.Recipe>> GetUserRecipesAsync(Guid userId, string? searchTerm, Guid? categoryId, string? sortBy,
         string? sortOrder, string? ingredientName);
-    Task<Recipe?> GetRecipeWithDetailsAsync(Guid recipeId);
+    Task<Domain.Entities.Recipe?> GetRecipeWithDetailsAsync(Guid recipeId);
 
     // Dashboard statistics methods
 
@@ -14,7 +14,7 @@ public interface IRecipeRepository : IGenericRepository<Recipe>
     Task<int> GetUserRecipeCountAsync(Guid userId);
 
     /// Gets the most recent recipes for a user
-    Task<IEnumerable<Recipe>> GetRecentRecipesAsync(Guid userId, int count = 5);
+    Task<IEnumerable<Domain.Entities.Recipe>> GetRecentRecipesAsync(Guid userId, int count = 5);
 
     /// Gets recipe count grouped by category for a user
     Task<Dictionary<Guid, int>> GetRecipeCountByCategoryAsync(Guid userId);
