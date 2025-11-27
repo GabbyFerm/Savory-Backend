@@ -1,7 +1,5 @@
 ﻿using Application.Common.Models;
-using Application.DTOs;
 using Application.Interfaces;
-using AutoMapper;
 using MediatR;
 
 namespace Application.Recipes.Commands.DeleteRecipe;
