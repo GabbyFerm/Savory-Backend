@@ -49,6 +49,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
 
         // Seed categories
         SeedCategories(modelBuilder);
+
+        // Seed common ingredients
+        SeedIngredients(modelBuilder);
     }
 
     private void SeedCategories(ModelBuilder modelBuilder)
@@ -64,5 +67,29 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
         };
 
         modelBuilder.Entity<Category>().HasData(categories);
+    }
+
+    private void SeedIngredients(ModelBuilder modelBuilder)
+    {
+        var ingredients = new[]
+        {
+            new Ingredient { Id = Guid.NewGuid(), Name = "Pasta", Unit = "g", CreatedAt = DateTime.UtcNow },
+            new Ingredient { Id = Guid.NewGuid(), Name = "Rice", Unit = "g", CreatedAt = DateTime.UtcNow },
+            new Ingredient { Id = Guid.NewGuid(), Name = "Butter", Unit = "g", CreatedAt = DateTime.UtcNow },
+            new Ingredient { Id = Guid.NewGuid(), Name = "Olive Oil", Unit = "ml", CreatedAt = DateTime.UtcNow },
+            new Ingredient { Id = Guid.NewGuid(), Name = "Parmesan", Unit = "g", CreatedAt = DateTime.UtcNow },
+            new Ingredient { Id = Guid.NewGuid(), Name = "Garlic", Unit = "cloves", CreatedAt = DateTime.UtcNow },
+            new Ingredient { Id = Guid.NewGuid(), Name = "Onion", Unit = "pcs", CreatedAt = DateTime.UtcNow },
+            new Ingredient { Id = Guid.NewGuid(), Name = "Tomato", Unit = "pcs", CreatedAt = DateTime.UtcNow },
+            new Ingredient { Id = Guid.NewGuid(), Name = "Chicken Breast", Unit = "g", CreatedAt = DateTime.UtcNow },
+            new Ingredient { Id = Guid.NewGuid(), Name = "Eggs", Unit = "pcs", CreatedAt = DateTime.UtcNow },
+            new Ingredient { Id = Guid.NewGuid(), Name = "Flour", Unit = "g", CreatedAt = DateTime.UtcNow },
+            new Ingredient { Id = Guid.NewGuid(), Name = "Sugar", Unit = "g", CreatedAt = DateTime.UtcNow },
+            new Ingredient { Id = Guid.NewGuid(), Name = "Salt", Unit = "g", CreatedAt = DateTime.UtcNow },
+            new Ingredient { Id = Guid.NewGuid(), Name = "Black Pepper", Unit = "g", CreatedAt = DateTime.UtcNow },
+            new Ingredient { Id = Guid.NewGuid(), Name = "Milk", Unit = "ml", CreatedAt = DateTime.UtcNow }
+        };
+
+        modelBuilder.Entity<Ingredient>().HasData(ingredients);
     }
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251125115312_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20251127145200_SeedIngredients")]
+    partial class SeedIngredients
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -117,38 +117,38 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e0328d10-3b44-4ecb-97a3-0b0f05b7edcc"),
-                            CreatedAt = new DateTime(2025, 11, 25, 11, 53, 12, 354, DateTimeKind.Utc).AddTicks(5535),
+                            Id = new Guid("3eadde6e-6553-466f-944d-4619638bdcde"),
+                            CreatedAt = new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(8962),
                             Name = "Breakfast"
                         },
                         new
                         {
-                            Id = new Guid("bb2e5330-104c-4097-8d71-d10e65f86beb"),
-                            CreatedAt = new DateTime(2025, 11, 25, 11, 53, 12, 354, DateTimeKind.Utc).AddTicks(5540),
+                            Id = new Guid("5ee86808-027e-4821-9dbc-c7e7e474c68f"),
+                            CreatedAt = new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(8971),
                             Name = "Lunch"
                         },
                         new
                         {
-                            Id = new Guid("63b2be4b-0eb8-4107-9321-b4b7c6071dbe"),
-                            CreatedAt = new DateTime(2025, 11, 25, 11, 53, 12, 354, DateTimeKind.Utc).AddTicks(5542),
+                            Id = new Guid("4065924a-9276-449b-a4a8-3613d6902e6d"),
+                            CreatedAt = new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(8973),
                             Name = "Dinner"
                         },
                         new
                         {
-                            Id = new Guid("339874c2-c52a-4c33-96f6-81ca4757ac8a"),
-                            CreatedAt = new DateTime(2025, 11, 25, 11, 53, 12, 354, DateTimeKind.Utc).AddTicks(5543),
+                            Id = new Guid("45960150-22bc-4373-9774-936d8649e3be"),
+                            CreatedAt = new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(8974),
                             Name = "Dessert"
                         },
                         new
                         {
-                            Id = new Guid("dd2243db-accc-46b9-82df-9e0fe999309a"),
-                            CreatedAt = new DateTime(2025, 11, 25, 11, 53, 12, 354, DateTimeKind.Utc).AddTicks(5544),
+                            Id = new Guid("703194bf-433f-42fb-ba97-fd7bf2da79c7"),
+                            CreatedAt = new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(8976),
                             Name = "Snack"
                         },
                         new
                         {
-                            Id = new Guid("adf632e3-925e-45f5-bcef-178ad82be6e8"),
-                            CreatedAt = new DateTime(2025, 11, 25, 11, 53, 12, 354, DateTimeKind.Utc).AddTicks(5545),
+                            Id = new Guid("1cc14a78-acfd-45fd-9f62-019d11fbd84a"),
+                            CreatedAt = new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(8977),
                             Name = "Beverage"
                         });
                 });
@@ -176,6 +176,113 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Ingredients");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("20e34178-e4b5-437d-b433-d9f5401c28fc"),
+                            CreatedAt = new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9134),
+                            Name = "Pasta",
+                            Unit = "g"
+                        },
+                        new
+                        {
+                            Id = new Guid("71392fb4-bce4-45b2-87e9-1d8bdcc5f964"),
+                            CreatedAt = new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9136),
+                            Name = "Rice",
+                            Unit = "g"
+                        },
+                        new
+                        {
+                            Id = new Guid("033f85a3-ed49-4904-84b5-d3ad3e7cf64b"),
+                            CreatedAt = new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9137),
+                            Name = "Butter",
+                            Unit = "g"
+                        },
+                        new
+                        {
+                            Id = new Guid("2410c70c-b047-490d-bbef-cb1747976866"),
+                            CreatedAt = new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9138),
+                            Name = "Olive Oil",
+                            Unit = "ml"
+                        },
+                        new
+                        {
+                            Id = new Guid("7572461c-25dd-4fed-beb6-ad24d56a496e"),
+                            CreatedAt = new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9140),
+                            Name = "Parmesan",
+                            Unit = "g"
+                        },
+                        new
+                        {
+                            Id = new Guid("1f79f995-5c70-458a-9652-1fa1f67b04fe"),
+                            CreatedAt = new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9141),
+                            Name = "Garlic",
+                            Unit = "cloves"
+                        },
+                        new
+                        {
+                            Id = new Guid("874c853a-6c8b-43ff-9472-ad0348a5e57c"),
+                            CreatedAt = new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9142),
+                            Name = "Onion",
+                            Unit = "pcs"
+                        },
+                        new
+                        {
+                            Id = new Guid("1479d39f-1c79-45fd-afa2-bb1b310d3c44"),
+                            CreatedAt = new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9143),
+                            Name = "Tomato",
+                            Unit = "pcs"
+                        },
+                        new
+                        {
+                            Id = new Guid("775b8a55-790d-4d73-8bd3-366924668c08"),
+                            CreatedAt = new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9146),
+                            Name = "Chicken Breast",
+                            Unit = "g"
+                        },
+                        new
+                        {
+                            Id = new Guid("4e4a0dcc-121f-4154-a54d-a58a968bd629"),
+                            CreatedAt = new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9148),
+                            Name = "Eggs",
+                            Unit = "pcs"
+                        },
+                        new
+                        {
+                            Id = new Guid("cca0d0c1-06c6-4d97-aac7-76dfb24cf3ab"),
+                            CreatedAt = new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9149),
+                            Name = "Flour",
+                            Unit = "g"
+                        },
+                        new
+                        {
+                            Id = new Guid("59774212-5dfe-4c3e-851b-542c25d58070"),
+                            CreatedAt = new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9150),
+                            Name = "Sugar",
+                            Unit = "g"
+                        },
+                        new
+                        {
+                            Id = new Guid("5c36a30f-7d23-4980-af67-15568ad028c9"),
+                            CreatedAt = new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9151),
+                            Name = "Salt",
+                            Unit = "g"
+                        },
+                        new
+                        {
+                            Id = new Guid("8a48d6f1-152e-4615-b58d-2f70343aa0ef"),
+                            CreatedAt = new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9153),
+                            Name = "Black Pepper",
+                            Unit = "g"
+                        },
+                        new
+                        {
+                            Id = new Guid("0031fc49-bffa-43bf-a3ac-186747d5a30d"),
+                            CreatedAt = new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9154),
+                            Name = "Milk",
+                            Unit = "ml"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Recipe", b =>

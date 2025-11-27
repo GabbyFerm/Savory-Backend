@@ -69,6 +69,7 @@ public static class DependencyInjection
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IRecipeRepository, RecipeRepository>();
         services.AddScoped<IIngredientRepository, IngredientRepository>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
 
         // Register services
         services.AddScoped<IJwtService, JwtService>();
