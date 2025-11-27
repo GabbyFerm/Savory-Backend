@@ -73,6 +73,12 @@ public static class DependencyInjection
         // Register services
         services.AddScoped<IJwtService, JwtService>();
 
+        // Add HTTP context accessor (needed to access HttpContext)
+        services.AddHttpContextAccessor();
+
+        // Register CurrentUserService
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
+
         return services;
     }
 }
