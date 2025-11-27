@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class SeedIngredients : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -252,12 +252,34 @@ namespace Infrastructure.Migrations
                 columns: new[] { "Id", "CreatedAt", "Name", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { new Guid("339874c2-c52a-4c33-96f6-81ca4757ac8a"), new DateTime(2025, 11, 25, 11, 53, 12, 354, DateTimeKind.Utc).AddTicks(5543), "Dessert", null },
-                    { new Guid("63b2be4b-0eb8-4107-9321-b4b7c6071dbe"), new DateTime(2025, 11, 25, 11, 53, 12, 354, DateTimeKind.Utc).AddTicks(5542), "Dinner", null },
-                    { new Guid("adf632e3-925e-45f5-bcef-178ad82be6e8"), new DateTime(2025, 11, 25, 11, 53, 12, 354, DateTimeKind.Utc).AddTicks(5545), "Beverage", null },
-                    { new Guid("bb2e5330-104c-4097-8d71-d10e65f86beb"), new DateTime(2025, 11, 25, 11, 53, 12, 354, DateTimeKind.Utc).AddTicks(5540), "Lunch", null },
-                    { new Guid("dd2243db-accc-46b9-82df-9e0fe999309a"), new DateTime(2025, 11, 25, 11, 53, 12, 354, DateTimeKind.Utc).AddTicks(5544), "Snack", null },
-                    { new Guid("e0328d10-3b44-4ecb-97a3-0b0f05b7edcc"), new DateTime(2025, 11, 25, 11, 53, 12, 354, DateTimeKind.Utc).AddTicks(5535), "Breakfast", null }
+                    { new Guid("1cc14a78-acfd-45fd-9f62-019d11fbd84a"), new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(8977), "Beverage", null },
+                    { new Guid("3eadde6e-6553-466f-944d-4619638bdcde"), new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(8962), "Breakfast", null },
+                    { new Guid("4065924a-9276-449b-a4a8-3613d6902e6d"), new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(8973), "Dinner", null },
+                    { new Guid("45960150-22bc-4373-9774-936d8649e3be"), new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(8974), "Dessert", null },
+                    { new Guid("5ee86808-027e-4821-9dbc-c7e7e474c68f"), new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(8971), "Lunch", null },
+                    { new Guid("703194bf-433f-42fb-ba97-fd7bf2da79c7"), new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(8976), "Snack", null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Ingredients",
+                columns: new[] { "Id", "CreatedAt", "Name", "Unit", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { new Guid("0031fc49-bffa-43bf-a3ac-186747d5a30d"), new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9154), "Milk", "ml", null },
+                    { new Guid("033f85a3-ed49-4904-84b5-d3ad3e7cf64b"), new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9137), "Butter", "g", null },
+                    { new Guid("1479d39f-1c79-45fd-afa2-bb1b310d3c44"), new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9143), "Tomato", "pcs", null },
+                    { new Guid("1f79f995-5c70-458a-9652-1fa1f67b04fe"), new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9141), "Garlic", "cloves", null },
+                    { new Guid("20e34178-e4b5-437d-b433-d9f5401c28fc"), new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9134), "Pasta", "g", null },
+                    { new Guid("2410c70c-b047-490d-bbef-cb1747976866"), new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9138), "Olive Oil", "ml", null },
+                    { new Guid("4e4a0dcc-121f-4154-a54d-a58a968bd629"), new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9148), "Eggs", "pcs", null },
+                    { new Guid("59774212-5dfe-4c3e-851b-542c25d58070"), new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9150), "Sugar", "g", null },
+                    { new Guid("5c36a30f-7d23-4980-af67-15568ad028c9"), new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9151), "Salt", "g", null },
+                    { new Guid("71392fb4-bce4-45b2-87e9-1d8bdcc5f964"), new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9136), "Rice", "g", null },
+                    { new Guid("7572461c-25dd-4fed-beb6-ad24d56a496e"), new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9140), "Parmesan", "g", null },
+                    { new Guid("775b8a55-790d-4d73-8bd3-366924668c08"), new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9146), "Chicken Breast", "g", null },
+                    { new Guid("874c853a-6c8b-43ff-9472-ad0348a5e57c"), new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9142), "Onion", "pcs", null },
+                    { new Guid("8a48d6f1-152e-4615-b58d-2f70343aa0ef"), new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9153), "Black Pepper", "g", null },
+                    { new Guid("cca0d0c1-06c6-4d97-aac7-76dfb24cf3ab"), new DateTime(2025, 11, 27, 14, 52, 0, 46, DateTimeKind.Utc).AddTicks(9149), "Flour", "g", null }
                 });
 
             migrationBuilder.CreateIndex(
