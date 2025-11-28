@@ -32,8 +32,8 @@ public class UpdateRecipeCommandHandler : IRequestHandler<UpdateRecipeCommand, O
             return OperationResult<RecipeDto>.Failure("User not authenticated");
         }
 
-        // Load existing recipe
-        var recipe = await _recipeRepository.GetByIdAsync(request.Id);
+        // Load existing recipe WITH ingredients
+        var recipe = await _recipeRepository.GetRecipeWithDetailsAsync(request.Id);
         if (recipe == null)
         {
             return OperationResult<RecipeDto>.Failure("Recipe not found");
@@ -55,8 +55,11 @@ public class UpdateRecipeCommandHandler : IRequestHandler<UpdateRecipeCommand, O
         recipe.CategoryId = request.CategoryId;
         recipe.UpdatedAt = DateTime.UtcNow;
 
+        // Update ingredients - CRITICAL: Remove old ones properly
+        recipe.RecipeIngredients.Clear();
 
-        // Update ingredients
+
+        // Add new ingredients
         foreach (var ingredientDto in request.Ingredients)
         {
             recipe.RecipeIngredients.Add(new RecipeIngredient
@@ -68,11 +71,10 @@ public class UpdateRecipeCommandHandler : IRequestHandler<UpdateRecipeCommand, O
         }
 
         // Save to database
-        await _recipeRepository.AddAsync(recipe);
+        await _recipeRepository.UpdateAsync(recipe);
         await _recipeRepository.SaveChangesAsync();
 
-        var updatedRecipe = await _recipeRepository.GetRecipeWithDetailsAsync(recipe.Id);
-        var recipeDto = _mapper.Map<RecipeDto>(updatedRecipe);
-        return OperationResult<RecipeDto>.Success(recipeDto);
+        // Return success
+        return OperationResult<RecipeDto>.Success(null);
     }
 }
