@@ -440,6 +440,11 @@ secrets.json
 *.db-shm
 *.db-wal
 
+# Uploaded files (recipe images, etc.)
+wwwroot/images/recipes/*
+!wwwroot/images/recipes/.gitkeep
+wwwroot/uploads/
+
 # Test coverage
 TestResults/
 coverage/
