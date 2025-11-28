@@ -74,7 +74,11 @@ public class UpdateRecipeCommandHandler : IRequestHandler<UpdateRecipeCommand, O
         await _recipeRepository.UpdateAsync(recipe);
         await _recipeRepository.SaveChangesAsync();
 
-        // Return success
-        return OperationResult<RecipeDto>.Success(null);
+        // Load the updated recipe with full details
+        var updatedRecipe = await _recipeRepository.GetRecipeWithDetailsAsync(recipe.Id);
+        var recipeDto = _mapper.Map<RecipeDto>(updatedRecipe);
+
+        // Return success with updated recipe
+        return OperationResult<RecipeDto>.Success(recipeDto);
     }
 }
