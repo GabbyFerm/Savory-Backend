@@ -9,5 +9,5 @@ namespace Application.Profile.Queries.GetProfile;
 /// </summary>
 public class GetProfileQuery : IRequest<OperationResult<UserProfileDto>>
 {
-    
+
 }
