@@ -1,7 +1,7 @@
 ﻿using Application.DTOs;
 using Domain.Entities;
 
-namespace Application.Mappings;
+namespace Application.Common.Mappings;
 
 /// <summary>
 /// AutoMapper profile for Recipe entity mappings
