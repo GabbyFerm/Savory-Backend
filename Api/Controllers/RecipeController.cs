@@ -1,6 +1,7 @@
 ﻿using Application.Recipes.Commands.CreateRecipe;
 using Application.Recipes.Commands.DeleteRecipe;
 using Application.Recipes.Commands.UpdateRecipe;
+using Application.Recipes.Commands.UploadRecipeImage;
 using Application.Recipes.Queries.GetRecipeById;
 using Application.Recipes.Queries.GetUserRecipes;
 using MediatR;
@@ -100,6 +101,39 @@ public class RecipeController : ControllerBase
             nameof(GetRecipeById),
             new { id = result.Data!.Id },
             result.Data);
+    }
+
+    /// <summary>
+    /// Uploads an image for a recipe
+    /// </summary>
+    /// <param name="id">Recipe ID</param>
+    /// <param name="file">Image file</param>
+    /// <returns>Image URL</returns>
+    [HttpPost("{id:guid}/image")]
+    [Consumes("multipart/form-data")]
+    public async Task<IActionResult> UploadRecipeImage(Guid id, IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+        {
+            return BadRequest(new { Message = "No file uploaded" });
+        }
+
+        var command = new UploadRecipeImageCommand
+        {
+            RecipeId = id,
+            ImageStream = file.OpenReadStream(),
+            FileName = file.FileName,
+            FileSize = file.Length
+        };
+
+        var result = await _mediator.Send(command);
+
+        if (!result.IsSuccess)
+        {
+            return BadRequest(new { Message = result.ErrorMessage });
+        }
+
+        return Ok(new { ImageUrl = result.Data });
     }
 
     /// <summary>

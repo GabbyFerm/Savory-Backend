@@ -83,6 +83,9 @@ namespace Api
             var corsPolicy = app.Environment.IsDevelopment() ? "Development" : "Production";
             app.UseCors(corsPolicy);
 
+            // Serve static files (images)
+            app.UseStaticFiles();
+
             // Authentication & Authorization 
             app.UseAuthentication();
             app.UseAuthorization();

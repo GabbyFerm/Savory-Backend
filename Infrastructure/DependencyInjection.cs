@@ -73,6 +73,7 @@ public static class DependencyInjection
 
         // Register services
         services.AddScoped<IJwtService, JwtService>();
+        services.AddScoped<IImageService, ImageService>();
 
         // Add HTTP context accessor (needed to access HttpContext)
         services.AddHttpContextAccessor();
