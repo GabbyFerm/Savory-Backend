@@ -1,6 +1,5 @@
 ﻿using Application.Common.Mappings;
 using Application.DTOs;
-using Application.Mappings;
 using AutoMapper;
 using Domain.Entities;
 using FluentAssertions;
