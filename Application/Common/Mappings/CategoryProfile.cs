@@ -1,5 +1,4 @@
 ﻿using Application.DTOs;
-using AutoMapper;
 using Domain.Entities;
 
 namespace Application.Mappings;
@@ -7,7 +6,7 @@ namespace Application.Mappings;
 /// <summary>
 /// AutoMapper profile for Category entity mappings
 /// </summary>
-public class CategoryProfile : Profile
+public class CategoryProfile : AutoMapper.Profile
 {
     public CategoryProfile()
     {
