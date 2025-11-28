@@ -1,5 +1,4 @@
 ﻿using Application.DTOs;
-using AutoMapper;
 using Domain.Entities;
 
 namespace Application.Mappings;
@@ -7,7 +6,7 @@ namespace Application.Mappings;
 /// <summary>
 /// AutoMapper profile for Recipe entity mappings
 /// </summary>
-public class RecipeProfile : Profile
+public class RecipeProfile : AutoMapper.Profile
 {
     public RecipeProfile()
     {
