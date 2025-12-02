@@ -32,15 +32,37 @@ public class RecipeRepository : GenericRepository<Recipe>, IRecipeRepository
             query = query.Where(r => r.CategoryId == categoryId.Value);
         }
 
-        // Search by title (case-insensitive)
-        if (!string.IsNullOrWhiteSpace(searchTerm))
+        // Combined search with OR logic when both are the same
+        // (Frontend unified search sends same value to both)
+        if (!string.IsNullOrWhiteSpace(searchTerm) && !string.IsNullOrWhiteSpace(ingredientName))
+        {
+            var lowerSearchTerm = searchTerm.ToLower();
+            var lowerIngredientName = ingredientName.ToLower();
+
+            // If they're the same value, use OR logic (unified search)
+            if (lowerSearchTerm == lowerIngredientName)
+            {
+                query = query.Where(r =>
+                    r.Title.ToLower().Contains(lowerSearchTerm) ||
+                    r.RecipeIngredients.Any(ri => ri.Ingredient.Name.ToLower().Contains(lowerIngredientName))
+                );
+            }
+            else
+            {
+                // If different values, use AND logic (advanced search)
+                query = query.Where(r =>
+                    r.Title.ToLower().Contains(lowerSearchTerm) &&
+                    r.RecipeIngredients.Any(ri => ri.Ingredient.Name.ToLower().Contains(lowerIngredientName))
+                );
+            }
+        }
+        // Single parameter provided - apply that filter
+        else if (!string.IsNullOrWhiteSpace(searchTerm))
         {
             var lowerSearchTerm = searchTerm.ToLower();
             query = query.Where(r => r.Title.ToLower().Contains(lowerSearchTerm));
         }
-
-        // Search by ingredient name (case-insensitive)
-        if (!string.IsNullOrWhiteSpace(ingredientName))
+        else if (!string.IsNullOrWhiteSpace(ingredientName))
         {
             var lowerIngredientName = ingredientName.ToLower();
             query = query.Where(r => r.RecipeIngredients.Any(ri =>
