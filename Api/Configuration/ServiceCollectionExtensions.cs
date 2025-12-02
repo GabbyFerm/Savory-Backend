@@ -66,9 +66,10 @@ public static class ServiceCollectionExtensions
             // Development policy - allow everything
             options.AddPolicy("Development", policy =>
             {
-                policy.AllowAnyOrigin()
+                policy.WithOrigins("http://localhost:5173") // Vite default port
                     .AllowAnyMethod()
-                    .AllowAnyHeader();
+                    .AllowAnyHeader()
+                    .AllowCredentials();
             });
 
             // Production policy - restrictive
