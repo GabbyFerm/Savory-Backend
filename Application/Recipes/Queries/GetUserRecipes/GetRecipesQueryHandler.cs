@@ -30,6 +30,10 @@ public class GetRecipesQueryHandler : IRequestHandler<GetRecipesQuery, Operation
             return OperationResult<PagedResult<RecipeDto>>.Failure("User not authenticated");
         }
 
+        // Apply defaults if not provided
+        var pageNumber = request.PageNumber > 0 ? request.PageNumber : 1;
+        var pageSize = request.PageSize > 0 ? request.PageSize : 10;
+
         var (recipes, totalCount) = await _recipeRepository.GetUserRecipesAsync(
             userId.Value,
             request.SearchTerm,
@@ -37,16 +41,16 @@ public class GetRecipesQueryHandler : IRequestHandler<GetRecipesQuery, Operation
             request.SortBy,
             request.SortOrder,
             request.IngredientName,
-            request.PageNumber,
-            request.PageSize);
+            pageNumber,
+            pageSize);
 
         var recipeDtos = _mapper.Map<IEnumerable<RecipeDto>>(recipes);
 
         var pagedResult = new PagedResult<RecipeDto>
         {
             Items = recipeDtos,
-            PageNumber = request.PageNumber,
-            PageSize = request.PageSize,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
             TotalCount = totalCount
         };
 
