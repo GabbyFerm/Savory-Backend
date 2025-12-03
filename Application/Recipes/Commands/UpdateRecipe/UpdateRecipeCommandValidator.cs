@@ -53,8 +53,9 @@ public class UpdateRecipeCommandValidator : AbstractValidator<UpdateRecipeComman
             ingredient.RuleFor(x => x.IngredientId)
                 .NotEmpty().WithMessage("Ingredient ID is required");
 
+            // Allow zero quantity for "to taste" ingredients
             ingredient.RuleFor(x => x.Quantity)
-                .GreaterThan(0).WithMessage("Quantity must be greater than 0");
+                .GreaterThanOrEqualTo(0).WithMessage("Quantity cannot be negative");
         });
     }
 }
