@@ -17,7 +17,7 @@ public class RecipeRepository : GenericRepository<Recipe>, IRecipeRepository
     /// <summary>
     /// Gets all recipes for a specific user with optional filtering and sorting
     /// </summary>
-    public async Task<IEnumerable<Recipe>> GetUserRecipesAsync(Guid userId, string? searchTerm, Guid? categoryId, string? sortBy, string? sortOrder, string? ingredientName)
+    public async Task<(IEnumerable<Recipe> recipes, int totalCount)> GetUserRecipesAsync(Guid userId, string? searchTerm, Guid? categoryId, string? sortBy, string? sortOrder, string? ingredientName, int pageNumber = 1, int pageSize = 10)
     {
         // Start with user's recipes and include related data
         IQueryable<Recipe> query = _dbSet
@@ -72,7 +72,16 @@ public class RecipeRepository : GenericRepository<Recipe>, IRecipeRepository
         // Apply sorting
         query = ApplySorting(query, sortBy, sortOrder);
 
-        return await query.ToListAsync();
+        // Get total count before pagination
+        var totalCount = await query.CountAsync();
+
+        // Apply pagination
+        var recipes = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return (recipes, totalCount);
     }
 
     /// <summary>

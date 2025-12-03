@@ -42,7 +42,9 @@ public class RecipeController : ControllerBase
         [FromQuery] Guid? categoryId,
         [FromQuery] string? sortBy,
         [FromQuery] string? sortOrder,
-        [FromQuery] string? ingredientName)
+        [FromQuery] string? ingredientName,
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10)
     {
         var query = new GetRecipesQuery
         {
@@ -50,7 +52,9 @@ public class RecipeController : ControllerBase
             CategoryId = categoryId,
             SortBy = sortBy,
             SortOrder = sortOrder,
-            IngredientName = ingredientName
+            IngredientName = ingredientName,
+            PageNumber = pageNumber,
+            PageSize = pageSize
         };
 
         var result = await _mediator.Send(query);

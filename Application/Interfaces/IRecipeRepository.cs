@@ -4,8 +4,8 @@ namespace Application.Interfaces;
 
 public interface IRecipeRepository : IGenericRepository<Domain.Entities.Recipe>
 {
-    Task<IEnumerable<Domain.Entities.Recipe>> GetUserRecipesAsync(Guid userId, string? searchTerm, Guid? categoryId, string? sortBy,
-        string? sortOrder, string? ingredientName);
+    Task<(IEnumerable<Recipe> recipes, int totalCount)> GetUserRecipesAsync(Guid userId, string? searchTerm, Guid? categoryId, string? sortBy,
+        string? sortOrder, string? ingredientName, int pageNumber, int pageSize);
     Task<Domain.Entities.Recipe?> GetRecipeWithDetailsAsync(Guid recipeId);
 
     // Dashboard statistics methods

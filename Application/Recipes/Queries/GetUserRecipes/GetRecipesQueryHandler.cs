@@ -9,7 +9,7 @@ namespace Application.Recipes.Queries.GetUserRecipes;
 /// <summary>
 /// Handler for getting all users recipes
 /// </summary>
-public class GetRecipesQueryHandler : IRequestHandler<GetRecipesQuery, OperationResult<IEnumerable<RecipeDto>>>
+public class GetRecipesQueryHandler : IRequestHandler<GetRecipesQuery, OperationResult<PagedResult<RecipeDto>>>
 {
     private readonly IRecipeRepository _recipeRepository;
     private readonly IMapper _mapper;
@@ -22,27 +22,34 @@ public class GetRecipesQueryHandler : IRequestHandler<GetRecipesQuery, Operation
         _currentUserService = currentUserService;
     }
 
-    public async Task<OperationResult<IEnumerable<RecipeDto>>> Handle(GetRecipesQuery request, CancellationToken cancellationToken)
+    public async Task<OperationResult<PagedResult<RecipeDto>>> Handle(GetRecipesQuery request, CancellationToken cancellationToken)
     {
-        // Get current user ID
         var userId = _currentUserService.GetUserId();
         if (userId == null)
         {
-            return OperationResult<IEnumerable<RecipeDto>>.Failure("User not authenticated");
+            return OperationResult<PagedResult<RecipeDto>>.Failure("User not authenticated");
         }
 
-        var userRecipes = await _recipeRepository.GetUserRecipesAsync(
+        var (recipes, totalCount) = await _recipeRepository.GetUserRecipesAsync(
             userId.Value,
             request.SearchTerm,
             request.CategoryId,
             request.SortBy,
             request.SortOrder,
-            request.IngredientName);
+            request.IngredientName,
+            request.PageNumber,
+            request.PageSize);
 
-        // Map to DTO
-        var recipeDtos = _mapper.Map<IEnumerable<RecipeDto>>(userRecipes);
+        var recipeDtos = _mapper.Map<IEnumerable<RecipeDto>>(recipes);
 
-        // Return success with created recipe
-        return OperationResult<IEnumerable<RecipeDto>>.Success(recipeDtos);
+        var pagedResult = new PagedResult<RecipeDto>
+        {
+            Items = recipeDtos,
+            PageNumber = request.PageNumber,
+            PageSize = request.PageSize,
+            TotalCount = totalCount
+        };
+
+        return OperationResult<PagedResult<RecipeDto>>.Success(pagedResult);
     }
 }
