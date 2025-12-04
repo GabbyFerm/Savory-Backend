@@ -28,14 +28,16 @@ public class RecipeController : ControllerBase
     }
 
     /// <summary>
-    /// Gets all recipes for the current user with optional filtering and sorting
+    /// Get all recipes for the current user with optional filtering and sorting
     /// </summary>
     /// <param name="searchTerm">Search term for recipe title</param>
     /// <param name="categoryId">Filter by category ID</param>
-    /// <param name="sortBy">Sort by: title, cooktime, createddate</param>
-    /// <param name="sortOrder">Sort order: asc, desc</param>
-    /// <param name="ingredientName">Filter by ingredient name</param>
-    /// <returns>List of recipes</returns>
+    /// <param name="sortBy">Sort field (title, categoryname, createddate, cooktime)</param>
+    /// <param name="sortOrder">Sort order (asc, desc)</param>
+    /// <param name="ingredientName">Search by ingredient name</param>
+    /// <param name="pageNumber">Page number (default: 1)</param>
+    /// <param name="pageSize">Page size (default: 10, max: 100)</param>
+    /// <returns>Paginated list of recipes</returns>
     [HttpGet]
     public async Task<IActionResult> GetRecipes(
         [FromQuery] string? searchTerm,

@@ -33,6 +33,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
             .WithMany(i => i.RecipeIngredients)
             .HasForeignKey(ri => ri.IngredientId);
 
+        modelBuilder.Entity<RecipeIngredient>()
+            .Property(ri => ri.Quantity)
+            .HasColumnType("decimal(18,2)");
+
         // Configure Recipe -> User relationship
         modelBuilder.Entity<Recipe>()
             .HasOne(r => r.User)
@@ -85,8 +89,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
             new Ingredient { Id = Guid.NewGuid(), Name = "Eggs", Unit = "pcs", CreatedAt = DateTime.UtcNow },
             new Ingredient { Id = Guid.NewGuid(), Name = "Flour", Unit = "g", CreatedAt = DateTime.UtcNow },
             new Ingredient { Id = Guid.NewGuid(), Name = "Sugar", Unit = "g", CreatedAt = DateTime.UtcNow },
-            new Ingredient { Id = Guid.NewGuid(), Name = "Salt", Unit = "g", CreatedAt = DateTime.UtcNow },
-            new Ingredient { Id = Guid.NewGuid(), Name = "Black Pepper", Unit = "g", CreatedAt = DateTime.UtcNow },
+            new Ingredient { Id = Guid.NewGuid(), Name = "Salt", Unit = "to taste", CreatedAt = DateTime.UtcNow },
+            new Ingredient { Id = Guid.NewGuid(), Name = "Black Pepper", Unit = "to taste", CreatedAt = DateTime.UtcNow },
             new Ingredient { Id = Guid.NewGuid(), Name = "Milk", Unit = "ml", CreatedAt = DateTime.UtcNow }
         };
 

@@ -37,7 +37,11 @@ namespace Api
             catch (Exception ex)
             {
                 Log.Fatal(ex, "Application terminated unexpectedly");
-                throw; // Re-throw to see the actual error
+                // Only throw if not running migrations
+                if (!ex.GetType().Name.Contains("HostAborted"))
+                {
+                    throw;
+                }
             }
             finally
             {

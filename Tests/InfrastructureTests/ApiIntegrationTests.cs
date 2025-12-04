@@ -27,7 +27,7 @@ public class ApiIntegrationTests : IntegrationTestBase
 
         // Assert - Registration successful
         registerResponse.Should().NotBeNull();
-        registerResponse.Token.Should().NotBeNullOrEmpty();
+        registerResponse.AccessToken.Should().NotBeNullOrEmpty();
         registerResponse.User.Should().NotBeNull();
         registerResponse.User.UserName.Should().Be(userName);
         registerResponse.User.Email.Should().Be(email);
@@ -37,11 +37,11 @@ public class ApiIntegrationTests : IntegrationTestBase
 
         // Assert - Login successful
         loginResponse.Should().NotBeNull();
-        loginResponse.Token.Should().NotBeNullOrEmpty();
+        loginResponse.AccessToken.Should().NotBeNullOrEmpty();
         loginResponse.User.UserName.Should().Be(userName);
 
         // Act - Access protected endpoint
-        SetAuthorizationHeader(loginResponse.Token);
+        SetAuthorizationHeader(loginResponse.AccessToken);
         var recipesResponse = await Client.GetAsync("/api/recipe");
 
         // Assert - Can access protected endpoint
@@ -53,7 +53,7 @@ public class ApiIntegrationTests : IntegrationTestBase
     {
         // Arrange - Register and login
         var authResponse = await RegisterUserAsync("recipeuser", "recipe@example.com", "Recipe123");
-        SetAuthorizationHeader(authResponse.Token);
+        SetAuthorizationHeader(authResponse.AccessToken);
 
         // Get categories to use valid category ID
         var categoriesResponse = await Client.GetAsync("/api/category");
@@ -106,7 +106,7 @@ public class ApiIntegrationTests : IntegrationTestBase
     {
         // Arrange - User A creates a recipe
         var userA = await RegisterUserAsync("usera", "usera@example.com", "UserA123");
-        SetAuthorizationHeader(userA.Token);
+        SetAuthorizationHeader(userA.AccessToken);
 
         var categoriesResponse = await Client.GetAsync("/api/category");
         var categories = await categoriesResponse.Content.ReadFromJsonAsync<List<CategoryWithCountDto>>();
@@ -136,7 +136,7 @@ public class ApiIntegrationTests : IntegrationTestBase
 
         // Act - User B tries to access User A's recipe
         var userB = await RegisterUserAsync("userb", "userb@example.com", "UserB123");
-        SetAuthorizationHeader(userB.Token);
+        SetAuthorizationHeader(userB.AccessToken);
 
         var getResponse = await Client.GetAsync($"/api/recipe/{userARecipe!.Id}");
 

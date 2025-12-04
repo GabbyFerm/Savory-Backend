@@ -23,7 +23,14 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Operation
     }
     public async Task<OperationResult<AuthResponseDto>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        // Create user with Identity
+        // Check if user already exists
+        var existingUser = await _userManager.FindByEmailAsync(request.Email);
+        if (existingUser != null)
+        {
+            return OperationResult<AuthResponseDto>.Failure("User with this email already exists");
+        }
+
+        // Create new user
         var newUser = new ApplicationUser
         {
             Id = Guid.NewGuid(),
@@ -36,19 +43,29 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Operation
 
         if (!result.Succeeded)
         {
-            return OperationResult<AuthResponseDto>.Failure(
-                string.Join(", ", result.Errors.Select(e => e.Description)));
+            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+            return OperationResult<AuthResponseDto>.Failure($"Registration failed: {errors}");
         }
 
-        // Generate JWT token
-        var token = _jwtService.GenerateToken(newUser);
+        // Generate tokens
+        var accessToken = _jwtService.GenerateToken(newUser);
+        var refreshToken = _jwtService.GenerateRefreshToken();
 
-        // Return response
-        return OperationResult<AuthResponseDto>.Success(new AuthResponseDto
+        // Save refresh token
+        newUser.RefreshToken = refreshToken;
+        newUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+        await _userManager.UpdateAsync(newUser);
+
+        var userDto = _mapper.Map<UserProfileDto>(newUser);
+
+        var authResponse = new AuthResponseDto
         {
-            Token = token,
-            User = _mapper.Map<UserProfileDto>(newUser)
-        });
+            AccessToken = accessToken,
+            RefreshToken = refreshToken,
+            User = userDto
+        };
+
+        return OperationResult<AuthResponseDto>.Success(authResponse);
     }
 
     private static string GenerateRandomColor()
