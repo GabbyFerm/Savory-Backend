@@ -29,6 +29,8 @@ public class UserProfile : AutoMapper.Profile
             .ForMember(dest => dest.LockoutEnd, opt => opt.Ignore())
             .ForMember(dest => dest.LockoutEnabled, opt => opt.Ignore())
             .ForMember(dest => dest.AccessFailedCount, opt => opt.Ignore())
+            .ForMember(dest => dest.RefreshToken, opt => opt.Ignore())  // ← ADD THIS
+            .ForMember(dest => dest.RefreshTokenExpiryTime, opt => opt.Ignore())  // ← ADD THIS
             .ForMember(dest => dest.Recipes, opt => opt.Ignore())
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
     }
