@@ -379,58 +379,6 @@ dotnet test Tests/InfrastructureTests
 - Multi-language support
 - Recipe print view
 
-## 📚 Reflection
-
-### Architecture Design
-
-I chose Clean Architecture with CQRS because it provides clear separation between business logic and infrastructure concerns. This made the codebase more maintainable and testable. The CQRS pattern with MediatR was initially challenging but ultimately made the code more organized - each operation has its own handler, validator, and clear responsibility.
-
-The decision to use the Repository pattern paid off during testing, as I could easily mock data access. However, I learned that the pattern can sometimes feel like unnecessary abstraction for simple CRUD operations. In a real project, I might use repositories only where complex queries are needed.
-
-### Key Learnings
-
-**Technical Skills:**
-
-- **Identity & JWT:** ASP.NET Core Identity was more complex than expected, especially configuring proper password requirements and JWT claims. Understanding the relationship between UserManager, SignInManager, and JWT generation took time but gave me solid authentication knowledge.
-
-- **CQRS with MediatR:** Initially felt like overkill, but the pattern really shines as the application grows. Each command/query is self-contained with its own validation, making the code predictable and easy to test.
-
-- **Testing Strategy:** I learned the hard way that writing tests after implementation is harder than TDD. The integration tests particularly highlighted configuration issues (like JWT settings in CI) that I wouldn't have caught otherwise.
-
-- **Entity Framework Relationships:** The many-to-many relationship with payload (RecipeIngredient with Quantity) required careful configuration. Learning about tracked entities and when to use `.Clear()` vs manual removal was crucial for the update operations.
-
-### Challenges Faced
-
-**1. Constructor Issues with JSON Deserialization:**
-Early on, I added constructors to my commands thinking it was good OOP practice. This broke JSON deserialization in ASP.NET Core! Learning that commands should be POCOs (property initialization only) was a valuable lesson about framework conventions.
-
-**2. Repository Method Selection:**
-Using `GetByIdAsync()` vs `GetRecipeWithDetailsAsync()` caused duplicate key errors in updates. I learned that navigation properties must be loaded (via Include) for `.Clear()` to properly mark items for deletion. This taught me about EF Core change tracking.
-
-**3. CI/CD Configuration:**
-Integration tests failed in GitHub Actions because JWT configuration wasn't available. Solving this taught me about different configuration strategies (in-memory config, test-specific settings, environment-based configuration).
-
-**4. Clean Architecture Boundaries:**
-I almost had my GetCategoriesQueryHandler directly inject ApplicationDbContext, which would violate Clean Architecture (Application → Infrastructure dependency). Catching this and moving the logic to a repository method reinforced the importance of maintaining proper layer boundaries.
-
-### What I Would Do Differently
-
-**1. Start with TDD:** Writing tests first would have caught the update recipe bug earlier and forced better design decisions.
-
-**2. More Comprehensive Logging Earlier:** I added Serilog late in the project. Having proper logging from day one would have made debugging much faster.
-
-**3. API Versioning from Start:** While not needed now, adding API versioning from the beginning would make future breaking changes easier to manage.
-
-**4. More Granular Commits:** Some of my commits covered too many changes. Smaller, focused commits would make the history more useful.
-
-**5. Consider Specification Pattern:** For complex filtering, the Specification pattern might be cleaner than passing multiple optional parameters to repository methods.
-
-### Conclusion
-
-This project gave me hands-on experience with production-quality .NET development. The combination of Clean Architecture, CQRS, comprehensive testing, and CI/CD creates a solid foundation that could scale to a real application. The most valuable takeaway is understanding how architectural patterns work together - how Clean Architecture enables testing, how CQRS simplifies complex operations, and how proper separation of concerns makes code maintainable.
-
-The VG requirements (filtering, sorting, dashboard, integration tests) pushed me beyond basic CRUD to think about real application needs. Building features that actually improve user experience - like search, categorization, and statistics - made the project feel like something I'd actually want to use.
-
 ## 👤 Author
 
 **Gabby Ferm**
@@ -444,4 +392,4 @@ This project is for educational purposes as part of coursework at [Your School N
 
 ---
 
-**Project Status:** Backend Complete ✅ | Frontend In Progress 🚧
+**Built with ❤️ using .NET 8 and Clean Architecture**
