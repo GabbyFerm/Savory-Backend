@@ -18,7 +18,6 @@ A fullstack recipe management application where users can store, organize, and m
 - [Testing](#-testing)
 - [Known Issues](#-known-issues)
 - [Future Improvements](#-future-improvements)
-- [Reflection](#-reflection)
 
 ## 🎯 Overview
 
