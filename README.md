@@ -21,75 +21,74 @@ A fullstack recipe management application where users can store, organize, and m
 
 ## 🎯 Overview
 
-Savory is a personal recipe manager built with .NET and React. Users can create accounts, add their favorite recipes with ingredients, organize them by categories, and manage their personal cookbook digitally.
+Savory is a personal recipe manager built with .NET 8 and Clean Architecture principles. Users can create accounts, add their favorite recipes with ingredients, organize them by categories, upload images, and manage their personal cookbook digitally.
 
-**Project Purpose:** School assignment for Objectoriented Programming - Advanced
+**Project Purpose:** School assignment for Object-Oriented Programming - Advanced
 
 ## 🛠️ Tech Stack
 
 **Backend:**
 
 - .NET 8 Web API
-- Entity Framework Core
-- SQL Server (SSMS)
-- ASP.NET Core Identity
+- Entity Framework Core 8
+- SQL Server Express
+- ASP.NET Core Identity (JWT Authentication)
+- MediatR (CQRS Pattern)
+- FluentValidation
 - AutoMapper
-- xUnit + Moq
-
-**Frontend:**
-- React 18
-- React Router
-- Axios
-- CSS Modules / Tailwind CSS
+- Serilog (Logging)
+- xUnit + Moq + FluentAssertions (Testing)
 
 **DevOps:**
 
 - GitHub Actions (CI/CD)
-- Git version control
+- Swagger/OpenAPI Documentation
 
 ## 🏗️ Architecture
 
-This project follows **Clean Architecture** principles with clear separation of concerns:
+This project follows **Clean Architecture** with **CQRS** pattern:
+
 ```
-┌─────────────────────────────────────────┐
-│          Savory.Api (Controllers)       │
-├─────────────────────────────────────────┤
-│   Savory.Application (Services, DTOs)   │
-├─────────────────────────────────────────┤
-│    Savory.Core (Domain Models, IRepo)   │
-├─────────────────────────────────────────┤
-│  Savory.Infrastructure (EF, Identity)   │
-└─────────────────────────────────────────┘
+┌─────────────────────────────────────────────┐
+│          Api (Controllers, Middleware)      │
+├─────────────────────────────────────────────┤
+│   Application (Commands, Queries, DTOs)     │
+├─────────────────────────────────────────────┤
+│    Domain (Entities, Interfaces)            │
+├─────────────────────────────────────────────┤
+│  Infrastructure (EF Core, Repositories)     │
+└─────────────────────────────────────────────┘
 ```
 
 **Key Patterns:**
-- Repository Pattern
-- Service Layer Pattern
-- Dependency Injection
-- DTO Pattern for API responses
+
+- **CQRS** with MediatR (Commands for writes, Queries for reads)
+- **Repository Pattern** (Data access abstraction)
+- **Service Layer** (Business logic separation)
+- **Dependency Injection** (Per-layer configuration)
+- **DTO Pattern** (API response/request objects)
 
 ## ✨ Features
 
-### Core Features 
-- ✅ User registration and authentication with Identity
-- ✅ User profile management (username, email, password)
-- ✅ Personalized user avatars with initials
-- ✅ Customizable avatar colors (preset palette)
-- ✅ Create, read, update, delete recipes
-- ✅ Add ingredients to recipes with quantities
-- ✅ Organize recipes by categories
-- ✅ Upload recipe images
-- ✅ View personal recipe collection
-- ✅ Global error handling
-- ✅ Input validation
+### Core Features
 
-### Advanced Features 
-- ⭐ Server-side filtering by category and search term
-- ⭐ Server-side sorting (by date, title, cook time)
-- ⭐ Dashboard with statistics (total recipes, by category, avg cook time)
-- ⭐ Custom exceptions with structured error responses
-- ⭐ React Context for state management
-- ⭐ Search and filter UI
+- ✅ User registration and authentication with JWT tokens
+- ✅ User profile management (username, email, password, avatar color)
+- ✅ Recipe CRUD operations (Create, Read, Update, Delete)
+- ✅ Ingredient management (Create, List, Search)
+- ✅ Category listing (Read-only, seeded data)
+- ✅ Recipe image upload (jpg, png, webp - max 5MB)
+- ✅ Global error handling with structured responses
+- ✅ Input validation with FluentValidation
+- ✅ Authorization (users can only access their own recipes)
+
+### Advanced Features
+
+- ✅ Server-side filtering (by category, search term, ingredient name)
+- ✅ Server-side sorting (by title, date, cook time - asc/desc)
+- ✅ Dashboard statistics (total recipes, by category, averages, recent recipes)
+- ✅ Custom exceptions with OperationResult pattern
+- ✅ Comprehensive logging (console + file with Serilog)
 
 ## 🗄️ Database Schema
 
@@ -129,34 +128,39 @@ This project follows **Clean Architecture** principles with clear separation of 
 - Recipes (Collection)
 
 **Recipe**
-- Id (Guid)
-- UserId (Guid, FK)
-- Title (string)
-- Description (string)
+
+- Id (Guid, PK)
+- UserId (Guid, FK → ApplicationUser)
+- Title (string, max 200)
+- Description (string, max 1000)
 - Instructions (string)
 - PrepTime (int, minutes)
 - CookTime (int, minutes)
 - Servings (int)
 - ImagePath (string, nullable)
-- CategoryId (Guid, FK)
+- CategoryId (Guid, FK → Category)
 - CreatedAt (DateTime)
 - UpdatedAt (DateTime, nullable)
 - RecipeIngredients (Collection)
 
 **Ingredient**
-- Id (Guid)
-- Name (string)
-- Unit (string, e.g., "g", "ml", "pcs")
+
+- Id (Guid, PK)
+- Name (string, max 100)
+- Unit (string, max 20) - "g", "ml", "pcs", etc.
+- CreatedAt (DateTime)
 - RecipeIngredients (Collection)
 
-**RecipeIngredient** (Bridge table)
-- RecipeId (Guid, FK)
-- IngredientId (Guid, FK)
+**RecipeIngredient** (Bridge Table)
+
+- RecipeId (Guid, PK, FK → Recipe)
+- IngredientId (Guid, PK, FK → Ingredient)
 - Quantity (decimal)
 
 **Category**
-- Id (Guid)
-- Name (string)
+
+- Id (Guid, PK)
+- Name (string, max 100)
 - Recipes (Collection)
 
 ### Relationships
@@ -172,26 +176,25 @@ This project follows **Clean Architecture** principles with clear separation of 
 ```
 POST   /api/auth/register          # Register new user
 POST   /api/auth/login             # Login user
-POST   /api/auth/logout            # Logout user
 ```
 
 ### User Profile
 
 ```
 GET    /api/profile                # Get current user profile
-PUT    /api/profile                # Update profile (username, email)
+PUT    /api/profile                # Update profile (username, email, avatar)
 PUT    /api/profile/password       # Change password
 ```
 
 ### Recipes
 
 ```
-GET    /api/recipes                # Get all user's recipes (with filtering/sorting)
-GET    /api/recipes/{id}           # Get single recipe with ingredients
-POST   /api/recipes                # Create new recipe
-PUT    /api/recipes/{id}           # Update recipe
-DELETE /api/recipes/{id}           # Delete recipe
-POST   /api/recipes/{id}/image     # Upload recipe image
+GET    /api/recipe                 # Get all user's recipes (with filters/sorting)
+GET    /api/recipe/{id}            # Get single recipe with ingredients
+POST   /api/recipe                 # Create new recipe
+PUT    /api/recipe/{id}            # Update recipe
+DELETE /api/recipe/{id}            # Delete recipe
+POST   /api/recipe/{id}/image      # Upload recipe image
 ```
 
 **Query Parameters:**
@@ -205,9 +208,9 @@ POST   /api/recipes/{id}/image     # Upload recipe image
 ### Ingredients
 
 ```
-GET    /api/ingredients            # Get all ingredients
-GET    /api/ingredients/{id}       # Get single ingredient
-POST   /api/ingredients            # Create ingredient
+GET    /api/ingredient             # Get all ingredients
+GET    /api/ingredient/{id}        # Get single ingredient
+POST   /api/ingredient             # Create ingredient
 ```
 
 **Query Parameters:**
@@ -217,19 +220,16 @@ POST   /api/ingredients            # Create ingredient
 ### Categories
 
 ```
-GET    /api/categories             # Get all categories
+GET    /api/category               # Get all categories with recipe counts
 ```
 
-### Dashboard 
+### Dashboard (VG Requirement)
+
 ```
 GET    /api/dashboard/stats        # Get user statistics
 ```
 
-**Query Parameters:**
-- `?search={term}` - Search recipes by title
-- `?categoryId={guid}` - Filter by category
-- `?sortBy={field}` - Sort by: title, createdDate, cookTime
-- `?sortOrder={asc|desc}` - Sort direction
+**Response includes:**
 
 - Total recipes count
 - Recipes grouped by category
@@ -242,9 +242,8 @@ GET    /api/dashboard/stats        # Get user statistics
 ### Prerequisites
 
 - .NET 8 SDK
-- SQL Server (SSMS)
-- Node.js (v18+)
-- npm or yarn
+- SQL Server Express (or SQL Server)
+- Visual Studio 2022 / VS Code / Rider
 
 ### Backend Setup
 
@@ -256,131 +255,128 @@ cd savory-backend
 ```
 
 2. **Update connection string**
-Edit `appsettings.json`:
+   Create `src/Api/appsettings.Development.json`:
+
 ```json
 {
-"ConnectionStrings": {
-  "DefaultConnection": "Server=localhost;Database=SavoryDb;Trusted_Connection=true;TrustServerCertificate=true;"
-}
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost\\SQLEXPRESS;Database=SavoryDb;Trusted_Connection=true;TrustServerCertificate=true;"
+  },
+  "Jwt": {
+    "Key": "YourSecretKeyHereMinimum32CharactersLong!!!",
+    "Issuer": "SavoryAPI",
+    "Audience": "SavoryAPI",
+    "ExpiresInMinutes": 60
+  }
 }
 ```
 
-3. **Create database**
+**3. Create database**
+
+**Option A: Using migrations**
+
 ```bash
-cd Savory.Api
+cd src/Api
 dotnet ef database update
 ```
 
-Or use the provided SQL script:
-```bash
-# Run savory-db-setup.sql in SSMS
+**Option B: Using SQL script**
+
+```sql
+-- In SSMS, create database
+CREATE DATABASE SavoryDb;
+GO
+
+USE SavoryDb;
+GO
+
+-- Run savory-db-setup.sql script
 ```
 
-4. **Run the API**
+**4. Run the API**
+
 ```bash
-dotnet run --project Savory.Api
+cd src/Api
+dotnet run
 ```
 
-API will be available at: `https://localhost:5001`
+API will be available at: `https://localhost:7286`
 
-### Frontend Setup
+**5. Access Swagger UI**
 
-1. **Clone the frontend repository**
-```bash
-git clone https://github.com/yourusername/savory-frontend.git
-cd savory-frontend
 ```
 https://localhost:7286/swagger
 ```
 
-2. **Install dependencies**
-```bash
-npm install
-```
-
-3. **Configure API URL**
-Create `.env` file:
-```
-REACT_APP_API_URL=https://localhost:5001/api
-```
-
-4. **Run the app**
-```bash
-npm start
-```
-
-App will be available at: `http://localhost:3000`
-
 ## 🧪 Testing
 
-### Run Unit Tests
+### Run All Tests
+
 ```bash
-dotnet test Savory.Tests
+dotnet test
+```
+
+### Run Specific Test Projects
+
+```bash
+# Unit tests
+dotnet test Tests/ApplicationTests
+
+# Integration tests
+dotnet test Tests/InfrastructureTests
 ```
 
 ### Test Coverage
-- ✅ 8+ unit tests (Services, business logic)
-- ✅ 3+ integration tests (API endpoints)
 
-**Key test areas:**
-- Recipe creation and validation
-- User authorization (users can only modify own recipes)
-- Ingredient management
-- Search and filtering logic
-- Edge cases (null values, invalid data)
+**Unit Tests (11 total):**
 
-### Example Tests
-- `RecipeService_CreateRecipe_ShouldAddRecipeToDatabase`
-- `RecipeService_DeleteRecipe_WhenNotOwner_ShouldThrowUnauthorizedException`
-- `RecipeController_GetRecipes_WithFilter_ShouldReturnFilteredResults`
+- CreateRecipeCommandHandler - success & authentication failures
+- UpdateRecipeCommandHandler - success & authorization failures
+- DeleteRecipeCommandHandler - success & not found scenarios
+- GetRecipeByIdQueryHandler - success & authorization failures
+- AutoMapper configuration validation
+- Entity mappings (Recipe, Ingredient, Category)
+
+**Integration Tests (3 total):**
+
+- Complete auth flow (register → login → access protected endpoint)
+- Recipe CRUD operations (create → retrieve with full data)
+- Authorization enforcement (users cannot access other users' recipes)
+
+**CI/CD:**
+
+- All tests run automatically on push/PR via GitHub Actions
+- Tests run in isolated in-memory database
+- Code formatting validation with dotnet format
 
 ## 🐛 Known Issues
 
-- Image upload is local only (stored in wwwroot/images)
-- No pagination on ingredients list
-- Category management is read-only for users
+- No pagination on recipe lists (can be added if performance becomes an issue)
+- Images stored locally in wwwroot (would need cloud storage for production deployment)
+- No recipe sharing between users
+- Category management is read-only (seeded data only)
 
 ## 🔮 Future Improvements
 
-**Technical improvements:**
-- Migrate image storage to Cloudinary for deployment
-- Add pagination to recipe lists
-- Implement caching for frequently accessed data
+**Technical Improvements:**
+
+- Add pagination to recipe and ingredient lists
+- Migrate image storage to Cloudinary/Azure Blob Storage
+- Implement caching for frequently accessed data (Redis)
 - Add rate limiting on API endpoints
 - Implement soft delete for recipes
 - Add recipe versioning (track changes)
 
 **Feature Improvements:**
 
-**Feature improvements:**
 - Meal planning calendar
 - Shopping list generation from recipes
 - Recipe sharing between users
 - Import recipes from URLs
-- Nutritional information
-
-**What I would do differently next time:**
-- Start with TDD from day one (wrote some tests after implementation)
-- Use AutoMapper profiles from the beginning
-- Implement CQRS pattern for clearer separation
-- Add more comprehensive logging with Serilog
-- Consider NoSQL for recipe storage (more flexible schema)
-
-## 📚 Reflection
-
-### Architecture Design
-I chose Clean Architecture because it provides clear separation between business logic and infrastructure concerns. This made testing easier and the codebase more maintainable. The Service-Repository pattern helped keep controllers thin and focused on HTTP concerns.
-
-### Key Learnings
-- Identity setup was more complex than expected, but provides robust security
-- TDD helped catch edge cases early (especially around user authorization)
-- AutoMapper significantly reduced boilerplate code
-- Server-side filtering required careful LINQ query construction
-
-### Challenges Faced
-- Handling many-to-many relationships with quantities (RecipeIngredient bridge table)
-- File upload implementation and path management
-- React state management with authentication context
+- Nutritional information calculation
+- Recipe ratings and reviews
+- Multi-language support
+- Recipe print view
 
 ## 👤 Author
 
@@ -391,4 +387,8 @@ I chose Clean Architecture because it provides clear separation between business
 
 ## 📄 License
 
-This project is for educational purposes.
+This project is for educational purposes as part of coursework at [Your School Name].
+
+---
+
+**Built with ❤️ using .NET 8 and Clean Architecture.**
