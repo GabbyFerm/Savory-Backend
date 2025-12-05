@@ -75,7 +75,10 @@ public static class ServiceCollectionExtensions
             // Production policy - restrictive
             options.AddPolicy("Production", policy =>
             {
-                policy.WithOrigins("https://your-frontend-domain.com")
+                policy.WithOrigins(
+                        "https://savory-frontend.vercel.app",
+                        "https://www.yourdomain.com" // Future custom domain
+                        )
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials();
