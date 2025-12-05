@@ -3,27 +3,47 @@ using System.Reflection;
 
 namespace Api.Configuration;
 
-/// <summary>
-/// Extension methods for configuring API-specific services
-/// </summary>
 public static class ServiceCollectionExtensions
 {
-    /// <summary>
-    /// Configures Swagger/OpenAPI
-    /// </summary>
     public static IServiceCollection AddSwaggerConfiguration(this IServiceCollection services)
     {
         services.AddSwaggerGen(options =>
         {
             options.SwaggerDoc("v1", new OpenApiInfo
             {
-                Title = "Clean Architecture Boilerplate API",
+                Title = "Savory API",
                 Version = "v1",
-                Description = "A production-ready boilerplate Web API following Clean Architecture principles with CQRS, MediatR, and FluentValidation",
+                Description = "A recipe management API following Clean Architecture with CQRS, MediatR, and FluentValidation",
                 License = new OpenApiLicense
                 {
                     Name = "MIT",
                     Url = new Uri("https://opensource.org/licenses/MIT")
+                }
+            });
+
+            // Add JWT Authentication to Swagger
+            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                Type = SecuritySchemeType.Http,
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Description = "Enter valid token directly without Bearer.\n\nExample: \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\""
+            });
+
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    Array.Empty<string>()
                 }
             });
 
@@ -39,9 +59,6 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    /// <summary>
-    /// Configures CORS policies
-    /// </summary>
     public static IServiceCollection AddCorsConfiguration(this IServiceCollection services)
     {
         services.AddCors(options =>
@@ -49,18 +66,22 @@ public static class ServiceCollectionExtensions
             // Development policy - allow everything
             options.AddPolicy("Development", policy =>
             {
-                policy.AllowAnyOrigin()
-                      .AllowAnyMethod()
-                      .AllowAnyHeader();
+                policy.WithOrigins("http://localhost:5173") // Vite default port
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
             });
 
             // Production policy - restrictive
             options.AddPolicy("Production", policy =>
             {
-                policy.WithOrigins("https://your-frontend-domain.com")
-                      .AllowAnyMethod()
-                      .AllowAnyHeader()
-                      .AllowCredentials();
+                policy.WithOrigins(
+                        "https://savory-frontend.vercel.app",
+                        "https://www.yourdomain.com" // Future custom domain
+                        )
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
             });
         });
 
