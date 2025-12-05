@@ -2,7 +2,12 @@
 
 A fullstack recipe management application where users can store, organize, and manage their personal recipes with ease.
 
+[![.NET CI](https://github.com/GabbyFerm/Savory-Backend/actions/workflows/dotnet-ci.yml/badge.svg)](https://github.com/GabbyFerm/Savory-Backend/actions/workflows/dotnet-ci.yml)
+[![Code Format](https://github.com/GabbyFerm/Savory-Backend/actions/workflows/code-format.yml/badge.svg)](https://github.com/GabbyFerm/Savory-Backend/actions/workflows/code-format.yml)
+[![Discord](https://img.shields.io/badge/Discord-Notifications-7289DA?logo=discord&logoColor=white)](https://discord.com)
+
 ## 📋 Table of Contents
+
 - [Overview](#-overview)
 - [Tech Stack](#-tech-stack)
 - [Architecture](#-architecture)
@@ -13,6 +18,7 @@ A fullstack recipe management application where users can store, organize, and m
 - [Testing](#-testing)
 - [Known Issues](#-known-issues)
 - [Future Improvements](#-future-improvements)
+- [Reflection](#-reflection)
 
 ## 🎯 Overview
 
@@ -23,6 +29,7 @@ Savory is a personal recipe manager built with .NET and React. Users can create 
 ## 🛠️ Tech Stack
 
 **Backend:**
+
 - .NET 8 Web API
 - Entity Framework Core
 - SQL Server (SSMS)
@@ -37,6 +44,7 @@ Savory is a personal recipe manager built with .NET and React. Users can create 
 - CSS Modules / Tailwind CSS
 
 **DevOps:**
+
 - GitHub Actions (CI/CD)
 - Git version control
 
@@ -89,11 +97,36 @@ This project follows **Clean Architecture** principles with clear separation of 
 ### Core Models
 
 **User** (via Identity)
+
 - Id (Guid)
 - Email (string)
 - Username (string)
 - PasswordHash (string)
 - AvatarColor (string) - Hex color for avatar background
+- Recipes (Collection)
+
+### Testing
+
+- ✅ **11 unit tests**
+  - Handler tests (Create, Update, Delete, GetById)
+  - Mapping tests (AutoMapper configuration)
+- ✅ **3 integration tests**
+  - Auth flow (Register → Login → Access protected endpoint)
+  - Recipe CRUD (Create and retrieve recipe)
+  - Authorization (User cannot access other user's recipes)
+- ✅ All tests pass in CI/CD pipeline
+
+## 🗄️ Database Schema
+
+### Core Models
+
+**ApplicationUser** (ASP.NET Identity)
+
+- Id (Guid, PK)
+- UserName (string)
+- Email (string)
+- PasswordHash (string)
+- AvatarColor (string) - Hex color for avatar
 - Recipes (Collection)
 
 **Recipe**
@@ -108,6 +141,7 @@ This project follows **Clean Architecture** principles with clear separation of 
 - ImagePath (string, nullable)
 - CategoryId (Guid, FK)
 - CreatedAt (DateTime)
+- UpdatedAt (DateTime, nullable)
 - RecipeIngredients (Collection)
 
 **Ingredient**
@@ -127,6 +161,7 @@ This project follows **Clean Architecture** principles with clear separation of 
 - Recipes (Collection)
 
 ### Relationships
+
 - User → Recipes (One-to-Many)
 - Recipe → Category (Many-to-One)
 - Recipe ↔ Ingredient (Many-to-Many via RecipeIngredient)
@@ -134,6 +169,7 @@ This project follows **Clean Architecture** principles with clear separation of 
 ## 📡 API Endpoints
 
 ### Authentication
+
 ```
 POST   /api/auth/register          # Register new user
 POST   /api/auth/login             # Login user
@@ -141,6 +177,7 @@ POST   /api/auth/logout            # Logout user
 ```
 
 ### User Profile
+
 ```
 GET    /api/profile                # Get current user profile
 PUT    /api/profile                # Update profile (username, email)
@@ -148,6 +185,7 @@ PUT    /api/profile/password       # Change password
 ```
 
 ### Recipes
+
 ```
 GET    /api/recipes                # Get all user's recipes (with filtering/sorting)
 GET    /api/recipes/{id}           # Get single recipe with ingredients
@@ -157,14 +195,28 @@ DELETE /api/recipes/{id}           # Delete recipe
 POST   /api/recipes/{id}/image     # Upload recipe image
 ```
 
+**Query Parameters:**
+
+- `?searchTerm={text}` - Search recipes by title
+- `?categoryId={guid}` - Filter by category
+- `?ingredientName={text}` - Filter by ingredient
+- `?sortBy={field}` - Sort by: title, createdDate, cookTime
+- `?sortOrder={asc|desc}` - Sort direction
+
 ### Ingredients
+
 ```
 GET    /api/ingredients            # Get all ingredients
 GET    /api/ingredients/{id}       # Get single ingredient
 POST   /api/ingredients            # Create ingredient
 ```
 
+**Query Parameters:**
+
+- `?searchTerm={text}` - Search ingredients by name
+
 ### Categories
+
 ```
 GET    /api/categories             # Get all categories
 ```
@@ -180,9 +232,16 @@ GET    /api/dashboard/stats        # Get user statistics
 - `?sortBy={field}` - Sort by: title, createdDate, cookTime
 - `?sortOrder={asc|desc}` - Sort direction
 
+- Total recipes count
+- Recipes grouped by category
+- Average cook time
+- Average prep time
+- 5 most recent recipes
+
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - .NET 8 SDK
 - SQL Server (SSMS)
 - Node.js (v18+)
@@ -191,6 +250,7 @@ GET    /api/dashboard/stats        # Get user statistics
 ### Backend Setup
 
 1. **Clone the repository**
+
 ```bash
 git clone https://github.com/yourusername/savory-backend.git
 cd savory-backend
@@ -199,8 +259,10 @@ cd savory-backend
 2. **Update connection string**
 Edit `appsettings.json`:
 ```json
+{
 "ConnectionStrings": {
   "DefaultConnection": "Server=localhost;Database=SavoryDb;Trusted_Connection=true;TrustServerCertificate=true;"
+}
 }
 ```
 
@@ -228,6 +290,8 @@ API will be available at: `https://localhost:5001`
 ```bash
 git clone https://github.com/yourusername/savory-frontend.git
 cd savory-frontend
+```
+https://localhost:7286/swagger
 ```
 
 2. **Install dependencies**
@@ -284,6 +348,10 @@ dotnet test Savory.Tests
 - Add pagination to recipe lists
 - Implement caching for frequently accessed data
 - Add rate limiting on API endpoints
+- Implement soft delete for recipes
+- Add recipe versioning (track changes)
+
+**Feature Improvements:**
 
 **Feature improvements:**
 - Meal planning calendar
@@ -318,6 +386,7 @@ I chose Clean Architecture because it provides clear separation between business
 ## 👤 Author
 
 **Gabby Ferm**
+
 - GitHub: [@GabbyFerm](https://github.com/GabbyFerm)
 - Email: gabbzf@gmail.com
 
